@@ -39,7 +39,7 @@ ranger_id INT,
 Foreign Key (ranger_id) REFERENCES rangers(ranger_id),
 species_id INT,
 Foreign Key (species_id) REFERENCES species(species_id),
-sighting_time TIMESTAMP   NOT NULL,
+sighting_time TIMESTAMP NOT NULL,
 location VARCHAR(50) NOT NULL,
 notes TEXT        
 
@@ -103,14 +103,6 @@ SET conservation_status = 'Historic'
 WHERE discovery_date < '1800-01-01'
 
 -- problem-8
-
-
--- SELECT *
--- CASE FROM sightings
---  WHEN sighting_time BETWEEN '07:00:00' AND '11:59:59' THEN 'Morning'
---  WHEN sighting_time BETWEEN '12:00:00' AND '16:59:59' THEN 'Afternoon'
---  WHEN sighting_time BETWEEN '17:00:00' AND '23:59:59' THEN 'Evening'
---  ELSE 'Night' 
 
 
 
