@@ -5,10 +5,12 @@ CREATE TABLE rangers(
    region VARCHAR(50) NOT NULL
 )
 
-INSERT INTO rangers( ranger_id ,name, region)
-VALUES ('Alice Green ', ' Northern Hill'), ('Bob White', 'River Delta') ('Carol King', 'Mountain Range');
+INSERT INTO rangers( ranger_id, name, region)
+VALUES (1,'Alice Green','Northern Hill'), 
+(2,'Bob White','River Delta'), 
+(3,'Carol King','Mountain Range');
 
-DROP TABLE rangers
+-- DROP TABLE rangers
 
 SELECT * FROM rangers;
 
@@ -33,26 +35,93 @@ SELECT * FROM species;
 
 CREATE TABLE sightings(
 sighting_id SERIAL PRIMARY KEY UNIQUE,
-ranger_id INT
-Foreign Key (ranger_id) REFERENCES rangers(id) 
+ranger_id INT,
+Foreign Key (ranger_id) REFERENCES rangers(ranger_id),
 species_id INT,
-Foreign Key (species_id) REFERENCES species(id),
-sighting_time DATE NOT NULL,
+Foreign Key (species_id) REFERENCES species(species_id),
+sighting_time TIMESTAMP   NOT NULL,
 location VARCHAR(50) NOT NULL,
-notes TEXT ,        
+notes TEXT        
 
 )
 
 
-INSERT INTO sightings(sighting_id, ranger_id, species_id, sighting_time, location, notes)
-VALUES (1,1,1,"Peak Ridge", "2024-05-10 07:45:00", "Camera trap image captured"),
-(2,2,2,"Bankwood Area", "2024-05-12 16:20:00", "Juvenile seen"),
-(3,3,3,"Bamboo Grove East", "2024-05-15 09:10:00", "Feeding observed"),
-(4,1,2,"Snowfall Pass", "2024-05-18 18:30:00", NULL);
+INSERT INTO sightings(sighting_id, ranger_id, species_id,location, sighting_time, notes)
+VALUES (1,1,1,'Peak Ridge','2024-05-10 07:45:00','Camera trap image captured'),
+(2,2,2,'Bankwood Area','2024-05-12 16:20:00','Juvenile seen'),
+(3,3,3,'Bamboo Grove East','2024-05-15 09:10:00','Feeding observed'),
+(4,1,2,'Snowfall Pass','2024-05-18 18:30:00',NULL);
 
 DROP TABLE sightings
 
 SELECT * FROM sightings
 
 
+ 
+-- problem-1
+Register a new ranger with provided data with name = 'Derek Fox' and region = 'Coastal Plains'
 
+INSERT INTO rangers( ranger_id, name, region)
+VALUES (4,'Derek Fox','Coastal Plains') 
+
+-- problem-2
+Count unique species ever sighted.
+
+SELECT COUNT(DISTINCT species_id) FROM sightings
+
+-- Problem-3
+Find all sightings where the location includes "Pass".
+
+SELECT * FROM sightings
+WHERE location ILIKE '%pass'
+
+-- Problem-5
+List species that have never been sighted.
+
+SELECT common_name FROM species
+WHERE species_id NOT IN (SELECT DISTINCT species_id FROM sightings)
+
+-- Problem-4
+
+SELECT rangers.name, COUNT(sightings.sighting_id) AS total_sightings
+FROM rangers
+JOIN sightings ON rangers.ranger_id = sightings.ranger_id
+GROUP BY rangers.name
+
+
+-- problem-6
+
+SELECT * FROM sightings
+ORDER BY sighting_time DESC
+LIMIT 2
+
+-- problem-7 
+
+SELECT * FROM species
+
+UPDATE species
+SET conservation_status = 'Historic'
+WHERE discovery_date < '1800-01-01'
+
+-- problem-8
+
+
+-- SELECT *
+-- CASE FROM sightings
+--  WHEN sighting_time BETWEEN '07:00:00' AND '11:59:59' THEN 'Morning'
+--  WHEN sighting_time BETWEEN '12:00:00' AND '16:59:59' THEN 'Afternoon'
+--  WHEN sighting_time BETWEEN '17:00:00' AND '23:59:59' THEN 'Evening'
+--  ELSE 'Night' 
+
+
+
+
+-- problem-9
+
+SELECT * FROM rangers
+
+SELECT * FROM sightings
+
+
+DELETE FROM rangers
+WHERE ranger_id NOT IN (SELECT DISTINCT ranger_id FROM sightings);
