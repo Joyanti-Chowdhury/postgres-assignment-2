@@ -59,24 +59,23 @@ SELECT * FROM sightings
 
  
 -- problem-1
-Register a new ranger with provided data with name = 'Derek Fox' and region = 'Coastal Plains'
+
 
 INSERT INTO rangers( ranger_id, name, region)
 VALUES (4,'Derek Fox','Coastal Plains') 
 
 -- problem-2
-Count unique species ever sighted.
+
 
 SELECT COUNT(DISTINCT species_id) FROM sightings
 
 -- Problem-3
-Find all sightings where the location includes "Pass".
 
 SELECT * FROM sightings
 WHERE location ILIKE '%pass'
 
 -- Problem-5
-List species that have never been sighted.
+
 
 SELECT common_name FROM species
 WHERE species_id NOT IN (SELECT DISTINCT species_id FROM sightings)
